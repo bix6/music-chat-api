@@ -5,8 +5,9 @@ const {
   makeChatroomArray,
   makeMessageArray,
 } = require("./fixtures/chatPage.fixtures.js");
+const supertest = require("supertest");
 
-describe.skip("Messages Endpoint", function () {
+describe("Chatrooms Endpoint", function () {
   let db;
 
   before("make knex instance", () => {
@@ -27,10 +28,22 @@ describe.skip("Messages Endpoint", function () {
     db.raw("TRUNCATE message, chatroom, person RESTART IDENTITY CASCADE")
   );
 
-  describe("GET /api/messages", () => {
-    context("Given no messages", () => {
+  describe("GET /api/chatrooms", () => {
+    context("Given no chatrooms", () => {
       it("responds with 200 and an empty list", () => {
-        return supertest(app).get("/api/messages").expect(200, []);
+        return supertest(app).get("/api/chatrooms").expect(200, []);
+      });
+    });
+
+    context("Given chatrooms", () => {
+      const testChatrooms = makeChatroomArray();
+
+      beforeEach("insert chatrooms", () => {
+        return db("chatroom").insert(testChatrooms);
+      });
+
+      it("responds with 200 and all chatrooms", () => {
+        return supertest(app).get("/api/chatrooms").expect(200);
       });
     });
   });

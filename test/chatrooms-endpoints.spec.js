@@ -2,6 +2,7 @@ const knex = require("knex");
 const app = require("../src/app");
 const { makeChatroomArray, makeChatroom } = require("./chat.fixtures.js");
 const supertest = require("supertest");
+const { expect } = require("chai");
 
 describe("Chatrooms Endpoint", function () {
   let db;
@@ -50,7 +51,7 @@ describe("Chatrooms Endpoint", function () {
     });
   });
 
-  describe.skip("POST /api/chatrooms", () => {
+  describe("POST /api/chatrooms", () => {
     const testChatroom = makeChatroom();
 
     context("Given no entries", () => {
@@ -58,7 +59,33 @@ describe("Chatrooms Endpoint", function () {
         return supertest(app)
           .post("/api/chatrooms")
           .send(testChatroom)
-          .set("Authorization", `Bearer ${process.env.API_TOKEN}`);
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(201)
+          .expect((res) => {
+            expect(res.body).to.have.property("id");
+            expect(res.body.name).to.eql(testChatroom.name);
+            expect(res.headers.location).to.eql(
+              `/api/chatrooms/${res.body.id}`
+            );
+          });
+      });
+
+      const requiredFields = ["name", "description"];
+
+      requiredFields.forEach((field) => {
+        const newChatroom = makeChatroom();
+
+        it("responds with 400 when required fields are missing", () => {
+          delete newChatroom[field];
+
+          return supertest(app)
+            .post("/api/chatrooms")
+            .send(newChatroom)
+            .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+            .expect(400, {
+              error: { message: `Missing ${field} in request body` },
+            });
+        });
       });
     });
   });

@@ -30,7 +30,10 @@ describe("Messages Endpoint", function () {
   describe("GET /api/messages/{chatroom_id}", () => {
     context("Given no messages", () => {
       it("responds with 200 and an empty list", () => {
-        return supertest(app).get("/api/messages/1").expect(200, []);
+        return supertest(app)
+          .get("/api/messages/1")
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(200, []);
       });
     });
 
@@ -52,7 +55,10 @@ describe("Messages Endpoint", function () {
       });
 
       it("responds with 200 and messages for specified chatroom", () => {
-        return supertest(app).get("/api/messages/1").expect(200);
+        return supertest(app)
+          .get("/api/messages/1")
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(200);
       });
     });
   });

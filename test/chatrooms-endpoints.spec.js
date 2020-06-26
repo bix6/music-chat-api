@@ -1,6 +1,7 @@
 const knex = require("knex");
 const app = require("../src/app");
-const { makeChatroomArray } = require("./chat.fixtures.js");
+const { makeChatroomArray, makeChatroom } = require("./chat.fixtures.js");
+const supertest = require("supertest");
 
 describe("Chatrooms Endpoint", function () {
   let db;
@@ -26,7 +27,10 @@ describe("Chatrooms Endpoint", function () {
   describe("GET /api/chatrooms", () => {
     context("Given no chatrooms", () => {
       it("responds with 200 and an empty list", () => {
-        return supertest(app).get("/api/chatrooms").expect(200, []);
+        return supertest(app)
+          .get("/api/chatrooms")
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(200, []);
       });
     });
 
@@ -38,7 +42,23 @@ describe("Chatrooms Endpoint", function () {
       });
 
       it("responds with 200 and all chatrooms", () => {
-        return supertest(app).get("/api/chatrooms").expect(200);
+        return supertest(app)
+          .get("/api/chatrooms")
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(200);
+      });
+    });
+  });
+
+  describe.skip("POST /api/chatrooms", () => {
+    const testChatroom = makeChatroom();
+
+    context("Given no entries", () => {
+      it("inserts chatroom, responds with 201 and id", () => {
+        return supertest(app)
+          .post("/api/chatrooms")
+          .send(testChatroom)
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`);
       });
     });
   });

@@ -26,6 +26,14 @@ function makeChatroomArray() {
   ];
 }
 
+function makeChatroom() {
+  return {
+    id: "1",
+    name: "Global",
+    description: "Welcome to the World Wide Music Chat!",
+  };
+}
+
 function makeMessageArray() {
   return [
     {
@@ -71,4 +79,9 @@ function makeMessageArray() {
   ];
 }
 
-module.exports = { makePersonArray, makeChatroomArray, makeMessageArray };
+module.exports = {
+  makePersonArray,
+  makeChatroomArray,
+  makeChatroom,
+  makeMessageArray,
+};

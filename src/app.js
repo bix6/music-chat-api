@@ -6,8 +6,8 @@ const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const validateBearerToken = require("./validate-bearer-token");
 const errorHandler = require("./error-handler");
-const foldersRouter = require("../src/folders/folders-router");
 const chatroomsRouter = require("../src/chatrooms/chatrooms-router");
+const messagesRouter = require("../src/messages/messages-router");
 // const logger = require('./logger');
 
 const app = express();
@@ -23,8 +23,8 @@ app.get("/", (req, res) => {
   res.send("Hello, Jello!");
 });
 
-app.use("/api/folders", foldersRouter);
 app.use("/api/chatrooms", chatroomsRouter);
+app.use("/api/messages", messagesRouter);
 
 app.use(errorHandler);
 

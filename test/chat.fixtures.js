@@ -26,7 +26,7 @@ function makeChatroomArray() {
   ];
 }
 
-function makeMessagesArray() {
+function makeMessageArray() {
   return [
     {
       id: "1",
@@ -71,4 +71,4 @@ function makeMessagesArray() {
   ];
 }
 
-module.exports = { makePersonArray, makeChatroomArray, makeMessagesArray };
+module.exports = { makePersonArray, makeChatroomArray, makeMessageArray };

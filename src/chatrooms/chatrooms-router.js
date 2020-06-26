@@ -1,10 +1,8 @@
 const express = require("express");
 const xss = require("xss");
-const path = require("path");
 const ChatroomsService = require("./chatrooms-service");
 
 const chatroomsRouter = express.Router();
-const jsonParser = express.json();
 
 const sanitizeChatroom = (chatroom) => ({
   id: xss(chatroom.id),

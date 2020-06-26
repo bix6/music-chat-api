@@ -1,7 +1,6 @@
 const knex = require("knex");
 const app = require("../src/app");
 const { makeChatroomArray } = require("./chat.fixtures.js");
-const supertest = require("supertest");
 
 describe("Chatrooms Endpoint", function () {
   let db;

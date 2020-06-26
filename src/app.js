@@ -19,10 +19,6 @@ app.use(helmet());
 app.use(cors());
 // app.use(validateBearerToken);
 
-app.get("/", (req, res) => {
-  res.send("Hello, Jello!");
-});
-
 app.use("/api/chatrooms", chatroomsRouter);
 app.use("/api/messages", messagesRouter);
 

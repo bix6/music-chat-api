@@ -5,7 +5,6 @@ const {
   makeChatroomArray,
   makeMessageArray,
 } = require("./chat.fixtures.js");
-const supertest = require("supertest");
 
 describe("Messages Endpoint", function () {
   let db;

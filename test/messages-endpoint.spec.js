@@ -2,9 +2,13 @@ const knex = require("knex");
 const app = require("../src/app");
 const {
   makePersonArray,
+  makePerson,
   makeChatroomArray,
+  makeChatroom,
   makeMessageArray,
+  makeMessage,
 } = require("./chat.fixtures.js");
+const { expect } = require("chai");
 
 describe("Messages Endpoint", function () {
   let db;
@@ -59,6 +63,60 @@ describe("Messages Endpoint", function () {
           .get("/api/messages/1")
           .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(200);
+      });
+    });
+  });
+
+  describe.only("POST /api/messages", () => {
+    const testChatroom = makeChatroom();
+    const testPerson = makePerson();
+    const testMessage = makeMessage();
+
+    context("Given no messages, 1 chatroom and 1 user", () => {
+      beforeEach("insert person and message", () => {
+        return db("person")
+          .insert(testPerson)
+          .then(() => {
+            return db("chatroom").insert(testChatroom);
+          });
+      });
+      it("inserts message, responds with 201 and id", () => {
+        return supertest(app)
+          .post("/api/messages")
+          .send(testMessage)
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(201)
+          .expect((res) => {
+            expect(res.body).to.have.property("id");
+            expect(res.body.message).to.eql(testMessage.message);
+            expect(res.headers.location).to.eql(
+              `/api/messages/${res.body.chatroom_id}`
+            );
+          });
+      });
+
+      const requiredFields = [
+        "content_type",
+        "message",
+        "content_id",
+        "chatroom_id",
+        "person_id",
+      ];
+
+      requiredFields.forEach((field) => {
+        const newMessage = makeMessage();
+
+        it("responds with 400 when required fields are missing", () => {
+          delete newMessage[field];
+
+          return supertest(app)
+            .post("/api/messages")
+            .send(newMessage)
+            .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+            .expect(400, {
+              error: { message: `Missing ${field} in request body` },
+            });
+        });
       });
     });
   });

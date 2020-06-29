@@ -11,6 +11,13 @@ function makePersonArray() {
   ];
 }
 
+function makePerson() {
+  return {
+    id: "1",
+    name: "bix",
+  };
+}
+
 function makeChatroomArray() {
   return [
     {
@@ -79,9 +86,22 @@ function makeMessageArray() {
   ];
 }
 
+function makeMessage() {
+  return {
+    id: "1",
+    content_type: "text",
+    message: "Music Chat, Baby",
+    content_id: "",
+    chatroom_id: "1",
+    person_id: "1",
+  };
+}
+
 module.exports = {
   makePersonArray,
+  makePerson,
   makeChatroomArray,
   makeChatroom,
   makeMessageArray,
+  makeMessage,
 };

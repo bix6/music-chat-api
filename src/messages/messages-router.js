@@ -48,8 +48,8 @@ messagesRouter.route("/").post(jsonParser, (req, res, next) => {
     }
   }
   // This is needed to remove the username from the payload
-  // So the insert doesn't throw an error
-  // the username is only needed for the GET
+  // so the insert doesn't throw an error.
+  // The username is only needed for the GET
   const noUsernameMessage = sanitizeMessage(newMessage);
   delete noUsernameMessage["username"];
 

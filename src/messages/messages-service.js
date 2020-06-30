@@ -1,7 +1,15 @@
 const MessagesService = {
   getByChatroomId(knex, chatroom_id) {
     return knex("message")
-      .select("*")
+      .select(
+        "message.id",
+        "message.content_type",
+        "message.message",
+        "message.content_id",
+        "message.chatroom_id",
+        "message.person_id",
+        "person.name"
+      )
       .where({ chatroom_id })
       .join("person", "message.person_id", "=", "person.id");
   },

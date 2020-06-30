@@ -13,6 +13,7 @@ const sanitizeMessage = (message) => ({
   content_id: xss(message.content_id),
   chatroom_id: xss(message.chatroom_id),
   person_id: xss(message.person_id),
+  username: xss(message.name),
 });
 
 messagesRouter.route("/:chatroom_id").get((req, res, next) => {
@@ -46,8 +47,13 @@ messagesRouter.route("/").post(jsonParser, (req, res, next) => {
       });
     }
   }
+  // This is needed to remove the username from the payload
+  // So the insert doesn't throw an error
+  // the username is only needed for the GET
+  const noUsernameMessage = sanitizeMessage(newMessage);
+  delete noUsernameMessage["username"];
 
-  MessagesService.insertMessage(req.app.get("db"), sanitizeMessage(newMessage))
+  MessagesService.insertMessage(req.app.get("db"), noUsernameMessage)
     .then((message) => {
       res
         .status(201)

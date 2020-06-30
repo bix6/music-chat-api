@@ -67,7 +67,7 @@ describe("Messages Endpoint", function () {
     });
   });
 
-  describe.only("POST /api/messages", () => {
+  describe("POST /api/messages", () => {
     const testChatroom = makeChatroom();
     const testPerson = makePerson();
     const testMessage = makeMessage();

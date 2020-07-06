@@ -31,7 +31,7 @@ describe("Messages Endpoint", function () {
     db.raw("TRUNCATE message, chatroom, person RESTART IDENTITY CASCADE")
   );
 
-  describe("GET /api/messages/{chatroom_id}", () => {
+  describe("GET /api/messages/{message_id}", () => {
     context("Given no messages", () => {
       it("responds with 200 and an empty list", () => {
         return supertest(app)
@@ -58,9 +58,45 @@ describe("Messages Endpoint", function () {
           });
       });
 
-      it("responds with 200 and messages for specified chatroom", () => {
+      it("responds with 200 and message", () => {
         return supertest(app)
           .get("/api/messages/1")
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(200);
+      });
+    });
+  });
+
+  describe("GET /api/messages/chatroom/{chatroom_id}", () => {
+    context("Given no messages", () => {
+      it("responds with 200 and an empty list", () => {
+        return supertest(app)
+          .get("/api/messages/chatroom/1")
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(200, []);
+      });
+    });
+
+    context("Given messages", () => {
+      const testPersons = makePersonArray();
+      const testChatrooms = makeChatroomArray();
+      const testMessages = makeMessageArray();
+
+      beforeEach("insert persons, chatrooms and messages", () => {
+        return db("person")
+          .insert(testPersons)
+          .then(() => {
+            return db("chatroom")
+              .insert(testChatrooms)
+              .then(() => {
+                return db("message").insert(testMessages);
+              });
+          });
+      });
+
+      it("responds with 200 and messages", () => {
+        return supertest(app)
+          .get("/api/messages/chatroom/1")
           .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(200);
       });

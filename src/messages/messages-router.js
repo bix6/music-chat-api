@@ -16,7 +16,15 @@ const sanitizeMessage = (message) => ({
   username: xss(message.name),
 });
 
-messagesRouter.route("/:chatroom_id").get((req, res, next) => {
+messagesRouter.route("/:message_id").get((req, res, next) => {
+  MessagesService.getByMessageId(req.app.get("db"), req.params.message_id)
+    .then((messages) => {
+      res.json(messages.map(sanitizeMessage));
+    })
+    .catch(next);
+});
+
+messagesRouter.route("/chatroom/:chatroom_id").get((req, res, next) => {
   MessagesService.getByChatroomId(req.app.get("db"), req.params.chatroom_id)
     .then((messages) => {
       res.json(messages.map(sanitizeMessage));
@@ -57,7 +65,7 @@ messagesRouter.route("/").post(jsonParser, (req, res, next) => {
     .then((message) => {
       res
         .status(201)
-        .location(path.posix.join(req.originalUrl, `/${message.chatroom_id}`))
+        .location(path.posix.join(req.originalUrl, `/${message.id}`))
         .json(sanitizeMessage(message));
     })
     .catch(next);

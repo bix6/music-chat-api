@@ -8,6 +8,7 @@ const validateBearerToken = require("./validate-bearer-token");
 const errorHandler = require("./error-handler");
 const chatroomsRouter = require("../src/chatrooms/chatrooms-router");
 const messagesRouter = require("../src/messages/messages-router");
+const personsRouter = require("../src/persons/persons-router");
 // const logger = require('./logger');
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(validateBearerToken);
 
 app.use("/api/chatrooms", chatroomsRouter);
 app.use("/api/messages", messagesRouter);
+app.use("/api/persons", personsRouter);
 
 app.use(errorHandler);
 

@@ -26,8 +26,8 @@ messagesRouter.route("/:message_id").get((req, res, next) => {
 
 messagesRouter.route("/chatroom/:chatroom_id").get((req, res, next) => {
   MessagesService.getByChatroomId(req.app.get("db"), req.params.chatroom_id)
-    .then((messages) => {
-      res.json(messages.map(sanitizeMessage));
+    .then((message) => {
+      res.json(message.map(sanitizeMessage));
     })
     .catch(next);
 });

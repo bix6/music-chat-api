@@ -18,6 +18,18 @@ personsRouter.route("/id/:id").get((req, res, next) => {
     })
     .catch(next);
 });
+
+personsRouter.route("/name/:name").get((req, res, next) => {
+  PersonsService.getByName(req.app.get("db"), req.params.name)
+    .then((person) => {
+      if (person) {
+        res.json(sanitizePerson(person));
+      } else {
+        res.json([]);
+      }
+    })
+    .catch(next);
+});
 /*
   .get((req, res, next) => {
     PersonsService.getAllChatrooms(req.app.get("db"))

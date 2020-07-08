@@ -51,6 +51,32 @@ describe.only("Persons Endpoint", function () {
     });
   });
 
+  describe("GET /api/persons/name/:name", () => {
+    context("Given no persons", () => {
+      it("responds with 200 and an empty list", () => {
+        return supertest(app)
+          .get("/api/persons/name/bix")
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(200, []);
+      });
+    });
+
+    context("Given persons", () => {
+      const testPersons = makePersonArray();
+
+      beforeEach("insert persons", () => {
+        return db("person").insert(testPersons);
+      });
+
+      it("responds with 200 and the person", () => {
+        return supertest(app)
+          .get("/api/persons/name/bix")
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(200);
+      });
+    });
+  });
+
   /*
   describe("POST /api/chatrooms", () => {
     const testChatroom = makeChatroom();

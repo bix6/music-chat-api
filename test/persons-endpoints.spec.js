@@ -4,7 +4,7 @@ const { makePersonArray, makePerson } = require("./chat.fixtures.js");
 const supertest = require("supertest");
 const { expect } = require("chai");
 
-describe.only("Persons Endpoint", function () {
+describe("Persons Endpoint", function () {
   let db;
 
   before("make knex instance", () => {

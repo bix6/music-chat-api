@@ -77,44 +77,42 @@ describe.only("Persons Endpoint", function () {
     });
   });
 
-  /*
-  describe("POST /api/chatrooms", () => {
-    const testChatroom = makeChatroom();
+  describe("POST /api/persons", () => {
+    const testPerson = makePerson();
 
     context("Given no entries", () => {
-      it("inserts chatroom, responds with 201 and id", () => {
+      it("inserts person, responds with 201 and id", () => {
         return supertest(app)
-          .post("/api/chatrooms")
-          .send(testChatroom)
+          .post("/api/persons")
+          .send(testPerson)
           .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
           .expect(201)
           .expect((res) => {
             expect(res.body).to.have.property("id");
-            expect(res.body.name).to.eql(testChatroom.name);
+            expect(res.body.name).to.eql(testPerson.name);
             expect(res.headers.location).to.eql(
-              `/api/chatrooms/${res.body.id}`
+              `/api/persons/id/${res.body.id}`
             );
           });
       });
+    });
 
-      const requiredFields = ["name", "description"];
+    const requiredFields = ["name"];
 
-      requiredFields.forEach((field) => {
-        const newChatroom = makeChatroom();
+    requiredFields.forEach((field) => {
+      const newPerson = makePerson();
 
-        it("responds with 400 when required fields are missing", () => {
-          delete newChatroom[field];
+      it("responds with 400 when required fields are missing", () => {
+        delete newPerson[field];
 
-          return supertest(app)
-            .post("/api/chatrooms")
-            .send(newChatroom)
-            .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
-            .expect(400, {
-              error: { message: `Missing ${field} in request body` },
-            });
-        });
+        return supertest(app)
+          .post("/api/persons")
+          .send(newPerson)
+          .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
+          .expect(400, {
+            error: { message: `Missing ${field} in request body` },
+          });
       });
     });
   });
-  */
 });

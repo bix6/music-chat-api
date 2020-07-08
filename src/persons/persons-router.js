@@ -30,37 +30,27 @@ personsRouter.route("/name/:name").get((req, res, next) => {
     })
     .catch(next);
 });
-/*
-  .get((req, res, next) => {
-    PersonsService.getAllChatrooms(req.app.get("db"))
-      .then((chatrooms) => {
-        res.json(chatrooms.map(sanitizePerson));
-      })
-      .catch(next);
-  })
-  .post(jsonParser, (req, res, next) => {
-    const { name, description } = req.body;
-    const newChatroom = { name, description };
 
-    for (const [key, value] of Object.entries(newChatroom)) {
-      if (value == null) {
-        return res.status(400).json({
-          error: { message: `Missing ${key} in request body` },
-        });
-      }
+personsRouter.route("/").post(jsonParser, (req, res, next) => {
+  const { name } = req.body;
+  const newPerson = { name };
+
+  for (const [key, value] of Object.entries(newPerson)) {
+    if (value == null) {
+      return res.status(400).json({
+        error: { message: `Missing ${key} in request body` },
+      });
     }
+  }
 
-    PersonsService.insertChatroom(
-      req.app.get("db"),
-      sanitizePerson(newChatroom)
-    )
-      .then((chatroom) => {
-        res
-          .status(201)
-          .location(path.posix.join(req.originalUrl, `/${chatroom.id}`))
-          .json(sanitizePerson(chatroom));
-      })
-      .catch(next);
-  });
-  */
+  PersonsService.insertPerson(req.app.get("db"), sanitizePerson(newPerson))
+    .then((person) => {
+      res
+        .status(201)
+        .location(path.posix.join(req.originalUrl, `/id/${person.id}`))
+        .json(sanitizePerson(person));
+    })
+    .catch(next);
+});
+
 module.exports = personsRouter;

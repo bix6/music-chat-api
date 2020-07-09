@@ -9,7 +9,7 @@
     "migrate": "postgrator --config postgrator-config.js",
     "migrate:test": "env NODE_ENV=test npm run migrate",
     "start": "node src/server.js",
-    "predeploy": "npm audit",
+    "predeploy": "npm audit --fix",
     "deploy": "git push heroku master"
   },
   "keywords": [],
@@ -33,5 +33,8 @@
     "nodemon": "^2.0.2",
     "postgrator-cli": "^3.2.0",
     "supertest": "^4.0.2"
+  },
+  "engines": {
+    "node": "12.13.1"
   }
 }

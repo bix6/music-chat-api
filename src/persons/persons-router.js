@@ -12,7 +12,6 @@ const sanitizePerson = (person) => ({
 });
 
 personsRouter.route("/id/:id").get((req, res, next) => {
-  console.log("persons id", req.cookies);
   PersonsService.getById(req.app.get("db"), req.params.id)
     .then((person) => {
       res.json(person.map(sanitizePerson));
@@ -21,7 +20,7 @@ personsRouter.route("/id/:id").get((req, res, next) => {
 });
 
 personsRouter.route("/name/:name").get((req, res, next) => {
-  console.log("persons name", req.cookies);
+  // TODO cookie console.log("persons name", req.cookies);
   PersonsService.getByName(req.app.get("db"), req.params.name)
     .then((person) => {
       if (person) {
@@ -49,7 +48,7 @@ personsRouter.route("/").post(jsonParser, (req, res, next) => {
     .then((person) => {
       res
         .status(201)
-        .cookie("test", "testBix", { expire: 600000 + Date.now() })
+        // TODO cookie .cookie("test", "testBix", { maxAge: 600000 })
         .location(path.posix.join(req.originalUrl, `/id/${person.id}`))
         .json(sanitizePerson(person));
     })

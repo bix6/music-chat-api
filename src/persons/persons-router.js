@@ -12,7 +12,7 @@ const sanitizePerson = (person) => ({
 });
 
 personsRouter.route("/id/:id").get((req, res, next) => {
-  console.log("persons name", req.cookies);
+  console.log("persons id", req.cookies);
   PersonsService.getById(req.app.get("db"), req.params.id)
     .then((person) => {
       res.json(person.map(sanitizePerson));
@@ -49,7 +49,7 @@ personsRouter.route("/").post(jsonParser, (req, res, next) => {
     .then((person) => {
       res
         .status(201)
-        .cookie("test", "testBix")
+        .cookie("test", "testBix", { expire: 600000 + Date.now() })
         .location(path.posix.join(req.originalUrl, `/id/${person.id}`))
         .json(sanitizePerson(person));
     })

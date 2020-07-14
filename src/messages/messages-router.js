@@ -6,6 +6,14 @@ const MessagesService = require("./messages-service");
 const messagesRouter = express.Router();
 const jsonParser = express.json();
 
+// TODO socket
+const io = require("socket.io");
+const socket = io();
+socket.on("chat message", (msg) => {
+  console.log("message: " + msg);
+  io.emit("chat message", msg);
+});
+
 const sanitizeMessage = (message) => ({
   id: message.id,
   content_type: xss(message.content_type),

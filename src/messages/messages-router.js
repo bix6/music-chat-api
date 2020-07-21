@@ -7,23 +7,19 @@ module.exports = function (io) {
   const messagesRouter = express.Router();
   const jsonParser = express.json();
 
-  // TODO socket
-  var sendResponse = () => {};
+  // socket setup and logic
+  var sendResponse = (msg) => {
+    io.emit("chat message", msg);
+  };
 
   io.on("connection", (socket) => {
     console.log();
     console.log(socket.client.id + " connected");
     console.log();
 
-    socket.on("connected", (data) => {
-      // TODO
-      // listen to event at any time (not just when endpoint is called)
-      // execute some code
-    });
-
-    socket.on("chat message", (data) => {
-      console.log("chat message, data: ", data);
-      sendResponse(data);
+    socket.on("chat message", (msg) => {
+      console.log("chat message: ", msg);
+      sendResponse(msg);
     });
   });
 
@@ -84,12 +80,6 @@ module.exports = function (io) {
 
     MessagesService.insertMessage(req.app.get("db"), noUsernameMessage)
       .then((message) => {
-        // https://stackoverflow.com/questions/56219098/make-socket-io-work-within-an-api-endpoint-in-node-js
-        // The send response and res logic is going to need some work
-        // TODO
-        sendResponse = (data) => {
-          io.emit("chat message", data);
-        };
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${message.id}`))
@@ -100,6 +90,3 @@ module.exports = function (io) {
 
   return messagesRouter;
 };
-
-// TODO
-// module.exports = messagesRouter;

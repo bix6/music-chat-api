@@ -11,7 +11,9 @@ module.exports = function (io) {
   var sendResponse = () => {};
 
   io.on("connection", (socket) => {
+    console.log();
     console.log(socket.client.id + " connected");
+    console.log();
 
     socket.on("connected", (data) => {
       // TODO
@@ -20,7 +22,7 @@ module.exports = function (io) {
     });
 
     socket.on("chat message", (data) => {
-      console.log("server on chat message");
+      console.log("chat message, data: ", data);
       sendResponse(data);
     });
   });

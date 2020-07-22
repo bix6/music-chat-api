@@ -8,7 +8,7 @@ module.exports = function (io) {
   const jsonParser = express.json();
 
   // socket setup and logic
-  var sendResponse = (msg) => {
+  const sendResponse = (msg) => {
     io.emit("chat message", msg);
   };
 

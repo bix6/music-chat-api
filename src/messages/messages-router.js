@@ -8,8 +8,8 @@ module.exports = function (io) {
   const jsonParser = express.json();
 
   // socket setup and logic
-  const sendResponse = (msg) => {
-    io.emit("chat message", msg);
+  const emitMessage = (msg) => {
+    io.emit("emit message from server", msg);
   };
 
   io.on("connection", (socket) => {
@@ -17,9 +17,9 @@ module.exports = function (io) {
     console.log(socket.client.id + " connected");
     console.log();
 
-    socket.on("chat message", (msg) => {
+    socket.on("emit message from client", (msg) => {
       console.log("chat message: ", msg);
-      sendResponse(msg);
+      emitMessage(msg);
     });
   });
 

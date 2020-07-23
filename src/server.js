@@ -11,8 +11,8 @@ const knex = require("knex");
 const { PORT, DATABASE_URL, NODE_ENV, CLIENT_ORIGIN } = require("./config");
 
 // Setup app
-// Then setup Socket
 const app = express();
+// Then setup Socket
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const messagesRouter = require("../src/messages/messages-router")(io);

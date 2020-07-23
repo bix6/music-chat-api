@@ -41,8 +41,8 @@ app.use("/api/persons", personsRouter);
 
 app.use(errorHandler);
 
-module.exports = app;
-
 server.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`);
 });
+
+module.exports = app;

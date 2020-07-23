@@ -7,22 +7,6 @@ module.exports = function (io) {
   const messagesRouter = express.Router();
   const jsonParser = express.json();
 
-  // socket setup and logic
-  const emitMessage = (msg) => {
-    io.emit("emit message from server", msg);
-  };
-
-  io.on("connection", (socket) => {
-    console.log();
-    console.log(socket.client.id + " connected");
-    console.log();
-
-    socket.on("emit message from client", (msg) => {
-      console.log("chat message: ", msg);
-      emitMessage(msg);
-    });
-  });
-
   const sanitizeMessage = (message) => ({
     id: message.id,
     content_type: xss(message.content_type),
@@ -31,6 +15,23 @@ module.exports = function (io) {
     chatroom_id: xss(message.chatroom_id),
     person_id: xss(message.person_id),
     username: xss(message.name),
+  });
+
+  // socket setup and logic
+  const emitMessage = (message) => {
+    console.log("emitMessage() running: ", message);
+    io.emit("emit message from server", message);
+  };
+
+  io.on("connection", (socket) => {
+    console.log();
+    console.log(socket.client.id + " connected");
+    console.log();
+
+    socket.on("emit message from client", (message) => {
+      console.log("chat message: ", message);
+      emitMessage(message);
+    });
   });
 
   messagesRouter.route("/:message_id").get((req, res, next) => {

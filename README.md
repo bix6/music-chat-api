@@ -2,7 +2,20 @@
 
 ## About
 
-This is the API / Backend for [Music Chat](https://github.com/bix6/music-chat). It's built with Express, Node.js and PostgreSQL.
+This is the API for [Music Chat](https://github.com/bix6/music-chat). It's built with Express, Node.js, PostgreSQL and WebSockets (socket.io).
+
+## Setup
+
+Sample `.env` file
+
+```
+NODE_ENV=development
+PORT=8000
+API_TOKEN=TODOuuid
+DATABASE_URL="postgresql://TODOuname:pw@localhost/music_chat"
+TEST_DATABASE_URL="postgresql://TODOuname:pw@localhost/music_chat_test"
+CLIENT_ORIGIN="http://localhost:3000"
+```
 
 ## Routes
 

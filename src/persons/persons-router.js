@@ -20,7 +20,6 @@ personsRouter.route("/id/:id").get((req, res, next) => {
 });
 
 personsRouter.route("/name/:name").get((req, res, next) => {
-  // TODO cookie console.log("persons name", req.cookies);
   PersonsService.getByName(req.app.get("db"), req.params.name)
     .then((person) => {
       if (person) {
@@ -48,7 +47,6 @@ personsRouter.route("/").post(jsonParser, (req, res, next) => {
     .then((person) => {
       res
         .status(201)
-        // TODO cookie .cookie("test", "testBix", { maxAge: 600000 })
         .location(path.posix.join(req.originalUrl, `/id/${person.id}`))
         .json(sanitizePerson(person));
     })

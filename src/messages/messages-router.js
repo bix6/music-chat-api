@@ -7,6 +7,8 @@ module.exports = function (io) {
   const messagesRouter = express.Router();
   const jsonParser = express.json();
 
+  // Sanitize the message to prevent XSS attacks
+  // and other undesirable effects
   const sanitizeMessage = (message) => ({
     id: message.id,
     content_type: xss(message.content_type),
@@ -17,19 +19,17 @@ module.exports = function (io) {
     username: xss(message.name),
   });
 
-  // socket setup and logic
+  // Emit a socket message
   const emitMessage = (message) => {
-    console.log("emitMessage() running: ", message);
     io.emit("emit message from server", message);
   };
 
+  // On socket connection
   io.on("connection", (socket) => {
-    console.log();
-    console.log(socket.client.id + " connected");
-    console.log();
+    // console.log(socket.client.id + " connected");
 
+    // Listen for emit message from client
     socket.on("emit message from client", (message) => {
-      console.log("chat message: ", message);
       emitMessage(message);
     });
   });

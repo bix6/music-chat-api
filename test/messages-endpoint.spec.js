@@ -1,5 +1,5 @@
 const knex = require("knex");
-const app = require("../src/app");
+const app = require("../src/server");
 const {
   makePersonArray,
   makePerson,

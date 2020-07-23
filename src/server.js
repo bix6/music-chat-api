@@ -28,11 +28,7 @@ const morganOption = NODE_ENV === "production" ? "tiny" : "dev";
 
 app.use(morgan(morganOption));
 app.use(helmet());
-app.use(
-  cors({
-    origin: CLIENT_ORIGIN,
-  })
-);
+app.use(cors());
 app.use(validateBearerToken);
 
 app.use("/api/chatrooms", chatroomsRouter);

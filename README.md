@@ -6,16 +6,7 @@ This is the API for [Music Chat](https://github.com/bix6/music-chat). It's built
 
 ## Setup
 
-Sample `.env` file
-
-```
-NODE_ENV=development
-PORT=8000
-API_TOKEN=TODOuuid
-DATABASE_URL="postgresql://TODOuname:pw@localhost/music_chat"
-TEST_DATABASE_URL="postgresql://TODOuname:pw@localhost/music_chat_test"
-CLIENT_ORIGIN="http://localhost:3000"
-```
+- `mv example.env .env`
 
 ## Routes
 

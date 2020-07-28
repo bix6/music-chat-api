@@ -25,7 +25,8 @@ const MessagesService = {
         "person.name"
       )
       .where({ chatroom_id })
-      .join("person", "message.person_id", "=", "person.id");
+      .join("person", "message.person_id", "=", "person.id")
+      .orderBy("message.id", "asc");
   },
   insertMessage(knex, message) {
     return knex("message")
